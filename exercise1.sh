@@ -38,7 +38,7 @@ then
 fi
 
 
-#controllare passaggio paramentro 
+# check if -w options has been inserted  
 if [ $# -gt 2 ]
 then 
 		if [ $3 == "-w" ]
@@ -52,9 +52,11 @@ then
 fi
 
 
-
-
+#main 
+destination_path=`pwd`/$2
 cd $1
+echo "destination path saved : " $destination_path
+
 for file in `find .`
 do
 	if [ "$file" == "." ]
@@ -64,23 +66,21 @@ do
 
 	if [ -d $file ]
 	then 
-		if [ -e ../$2/$file ]
+		if [ -e $destination_path/$file ]
 		then
-			rm -rf ../$2/$file
+			rm -rf $destination_path/$file
 		fi
-		mkdir ../$2/$file
+		mkdir $destination_path/$file
 	else
 		t="./"
-		#echo ${file/$t/}
-
+		#remove ./ 	
 		filename=${file/$t/}
-		#data_cut=${file#"./"}
-		#echo "After Replacement:" ${file//.//$file}
-		cp -v $filename   ../$2/$filename
+		cp -v $filename   $destination_path/$filename
 	fi
 done
+
 cd ..
-list="ls -la $2"
-echo "*--`pwd`/$2 --*"
+list="ls -la $destination_path"
+echo "*--$destination_path --*"
 
 eval $list
